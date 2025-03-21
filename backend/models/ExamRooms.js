@@ -1,25 +1,31 @@
-import db from "../config.js";
+import db from '../config.js';
 
 const ExamRoom = {
-  getAll: (callback) => {
-    db.query("SELECT * FROM exam_rooms", callback);
-  },
+    create: (roomData, callback) => {
+        db.query(`INSERT INTO exam_rooms (name, subject_id, exam_id, type) VALUES (?, ?, ?, ?)`,
+        [roomData.name, roomData.subject_id, roomData.exam_id, roomData.type], callback);
+    },
 
-  getById: (id, callback) => {
-    db.query("SELECT * FROM exam_rooms WHERE id = ?", [id], callback);
-  },
+    findAll: (callback) => {
+        db.query(`SELECT er.*, s.subject_name, e.exam_name FROM exam_rooms er 
+                  JOIN subjects s ON er.subject_id = s.id
+                  JOIN exams e ON er.exam_id = e.id`, callback);
+    },
 
-  create: (examRoom, callback) => {
-    db.query("INSERT INTO exam_rooms SET ?", examRoom, callback);
-  },
+    findById: (roomId, callback) => {
+        db.query(`SELECT er.*, s.subject_name, e.exam_name FROM exam_rooms er 
+                  JOIN subjects s ON er.subject_id = s.id
+                  JOIN exams e ON er.exam_id = e.id WHERE er.id = ?`, [roomId], callback);
+    },
 
-  update: (id, examRoom, callback) => {
-    db.query("UPDATE exam_rooms SET ? WHERE id = ?", [examRoom, id], callback);
-  },
+    update: (roomId, roomData, callback) => {
+        db.query(`UPDATE exam_rooms SET name = ?, subject_id = ?, exam_id = ?, type = ? WHERE id = ?`,
+        [roomData.name, roomData.subject_id, roomData.exam_id, roomData.type, roomId], callback);
+    },
 
-  delete: (id, callback) => {
-    db.query("DELETE FROM exam_rooms WHERE id = ?", [id], callback);
-  },
+    delete: (roomId, callback) => {
+        db.query(`DELETE FROM exam_rooms WHERE id = ?`, [roomId], callback);
+    }
 };
 
 export default ExamRoom;

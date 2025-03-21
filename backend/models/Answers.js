@@ -1,25 +1,31 @@
-import db from "../config.js";
+import db from '../config.js';
 
 const Answer = {
-  getAllByQuestionId: (q_id, callback) => {
-    db.query("SELECT * FROM answers WHERE q_id = ?", [q_id], callback);
-  },
+    create: (answerData, callback) => {
+        db.query(`INSERT INTO answers (q_id, answer_text, is_correct) VALUES (?, ?, ?)`,
+        [answerData.q_id, answerData.answer_text, answerData.is_correct], callback);
+    },
 
-  getById: (id, callback) => {
-    db.query("SELECT * FROM answers WHERE id = ?", [id], callback);
-  },
+    findAll: (callback) => {
+        db.query(`SELECT * FROM answers`, callback);
+    },
 
-  create: (answer, callback) => {
-    db.query("INSERT INTO answers SET ?", answer, callback);
-  },
+    findByQuestionId: (questionId, callback) => {
+        db.query(`SELECT * FROM answers WHERE q_id = ?`, [questionId], callback);
+    },
 
-  update: (id, answer, callback) => {
-    db.query("UPDATE answers SET ? WHERE id = ?", [answer, id], callback);
-  },
+    findById: (answerId, callback) => {
+        db.query(`SELECT * FROM answers WHERE id = ?`, [answerId], callback);
+    },
 
-  delete: (id, callback) => {
-    db.query("DELETE FROM answers WHERE id = ?", [id], callback);
-  },
+    update: (answerId, answerData, callback) => {
+        db.query(`UPDATE answers SET answer_text = ?, is_correct = ? WHERE id = ?`,
+        [answerData.answer_text, answerData.is_correct, answerId], callback);
+    },
+
+    delete: (answerId, callback) => {
+        db.query(`DELETE FROM answers WHERE id = ?`, [answerId], callback);
+    }
 };
 
 export default Answer;
