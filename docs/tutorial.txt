@@ -1,0 +1,15 @@
+mkdir exam_management
+cd exam_management 
+mkdir backend 
+cd backend 
+npm init -y 
+npm i express cors mysql2 nodemon
+
+Settings node module: nodemon app.js
+
+
+npx create-react-app frontend
+cd frontend 
+npm i axios react-router-dom 
+npm start 
+
